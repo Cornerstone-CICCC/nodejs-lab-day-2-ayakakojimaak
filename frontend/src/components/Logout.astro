@@ -1,0 +1,19 @@
+<button id="js-logout-btn">Logout</button>
+
+<script>
+  const logoutBtn = document.getElementById("js-logout-btn") as HTMLButtonElement;
+
+  logoutBtn.addEventListener("click", () => {
+    fetch("http://localhost:4500/api/user/logout", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    }).then((res) => {
+      if (res.ok) {
+        window.location.href = "/login";
+      }
+    });
+  });
+</script>

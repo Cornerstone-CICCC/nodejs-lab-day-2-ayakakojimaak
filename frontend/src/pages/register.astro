@@ -1,0 +1,23 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Signup from "../components/Signup.astro";
+---
+
+<Layout>
+  <Signup title="Signup" action="signup" />
+</Layout>
+
+<script>
+  const url = "http://localhost:4500/api/user/check-auth";
+  fetch(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  }).then((res) => {
+    if (res.ok) {
+      window.location.href = "/profile";
+    }
+  });
+</script>
