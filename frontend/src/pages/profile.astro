@@ -1,0 +1,39 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Logout from "../components/Logout.astro";
+---
+
+<Layout>
+  <h2>Member Profile</h2>
+  <div>Username <span id="js-member-username"></span></div>
+  <div>Firstname <span id="js-member-firstname"></span></div>
+  <div>Lastname <span id="js-member-lastname"></span></div>
+  <Logout />
+</Layout>
+
+<script>
+  const username = document.getElementById("js-member-username") as HTMLSpanElement;
+  const firstname = document.getElementById("js-member-firstname") as HTMLSpanElement;
+  const lastname = document.getElementById("js-member-lastname") as HTMLSpanElement;
+
+  const url = "http://localhost:4500/api/user/check-auth";
+  fetch(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  })
+    .then((res) => {
+      if (!res.ok) {
+        window.location.href = "/login";
+        return;
+      }
+      return res.json();
+    })
+    .then((data) => {
+      username.textContent = data.username;
+      firstname.textContent = data.firstname;
+      lastname.textContent = data.lastname;
+    });
+</script>

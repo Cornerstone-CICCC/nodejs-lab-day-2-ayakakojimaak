@@ -1,0 +1,62 @@
+---
+const { title, action } = Astro.props;
+---
+
+<div id="container">
+  <h1>{title}</h1>
+  <form id="js-login-form" method="POST">
+    <label for="username">Username</label>
+    <input type="text" name="username" id="username" required />
+    <label for="password">Password</label>
+    <input type="password" name="password" id="password" required />
+    <button type="submit" id="js-login-user-btn" data-action=`${action}`>Submit</button>
+  </form>
+</div>
+
+<style></style>
+
+<script>
+  const getFormData = () => {
+    const form = document.getElementById("js-login-form") as HTMLFormElement;
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+    if (data.username && data.password) {
+      return data;
+    }
+    return null;
+  };
+
+  const login = async (action: string) => {
+    const url = `http://localhost:4500/api/user/${action}`;
+    const user = getFormData();
+    if (user) {
+      const res = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(user),
+        credentials: "include",
+      });
+      const data = await res.json();
+      if (res.ok) {
+        window.location.href = "/profile";
+      } else {
+        alert(data.message);
+      }
+    } else {
+      alert("Please fill all the fields");
+    }
+  };
+
+  const loginBtn = document.getElementById("js-login-user-btn");
+  loginBtn?.addEventListener("click", async (e) => {
+    e.preventDefault();
+    const action = loginBtn.dataset.action as string;
+    if (action) {
+      await login(action);
+    } else {
+      alert("Invalid action");
+    }
+  });
+</script>
