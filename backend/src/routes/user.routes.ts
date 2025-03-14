@@ -3,7 +3,7 @@ import userController from "../controllers/user.controller";
 
 const userRouter = Router();
 
-userRouter.get("/", userController.getUser);
+// userRouter.get("/", userController.getUser);
 userRouter.post("/signup", userController.addUser);
 userRouter.post("/login", userController.loginUser);
 userRouter.get("/logout", userController.logoutUser);
